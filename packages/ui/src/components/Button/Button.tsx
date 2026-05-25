@@ -1,54 +1,69 @@
 import React, { forwardRef } from 'react';
-import { Slot } from '@radix-ui/react-slot';
 import { tv, type VariantProps } from 'tailwind-variants';
 import { cn } from '../../utils/cn';
+
+// Simple Slot component to replace Radix Slot
+const Slot = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement> & { children: React.ReactElement }>(
+  ({ children, ...props }, ref) => {
+    if (React.isValidElement(children)) {
+      return React.cloneElement(children, {
+        ...props,
+        ...children.props,
+        ref,
+        className: cn(props.className, children.props.className),
+      } as any);
+    }
+    return null;
+  }
+);
+Slot.displayName = 'Slot';
 
 const buttonVariants = tv({
   base: [
     'inline-flex items-center justify-center gap-2',
-    'rounded-lg font-medium transition-colors',
+    'rounded-md font-medium transition-all duration-200',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2',
-    'disabled:pointer-events-none disabled:opacity-50',
+    'disabled:pointer-events-none disabled:opacity-60',
     'select-none',
+    'shadow-sm',
   ],
   variants: {
     variant: {
       primary: [
-        'bg-primary-600 text-white',
-        'hover:bg-primary-700',
-        'active:bg-primary-800',
-        'dark:bg-primary-500 dark:hover:bg-primary-600',
+        'bg-success-400 text-white border border-success-600/30',
+        'hover:bg-success-500 hover:border-success-600/50',
+        'active:bg-success-600',
+        'shadow-sm hover:shadow',
       ],
       secondary: [
-        'bg-secondary-600 text-white',
-        'hover:bg-secondary-700',
-        'active:bg-secondary-800',
-        'dark:bg-secondary-500 dark:hover:bg-secondary-600',
+        'bg-neutral-100 text-neutral-900 border border-neutral-300',
+        'hover:bg-neutral-200 hover:border-neutral-400',
+        'active:bg-neutral-300',
+        'shadow-sm hover:shadow',
       ],
       outline: [
-        'border-2 border-neutral-300 bg-transparent',
-        'hover:bg-neutral-100',
+        'border border-neutral-300 bg-white text-neutral-700',
+        'hover:bg-neutral-100 hover:border-neutral-400',
         'active:bg-neutral-200',
-        'dark:border-neutral-700 dark:hover:bg-neutral-800 dark:active:bg-neutral-700',
+        'shadow-sm hover:shadow',
       ],
       ghost: [
-        'bg-transparent',
+        'bg-transparent text-neutral-700',
         'hover:bg-neutral-100',
         'active:bg-neutral-200',
-        'dark:hover:bg-neutral-800 dark:active:bg-neutral-700',
       ],
       danger: [
-        'bg-error-600 text-white',
-        'hover:bg-error-700',
-        'active:bg-error-800',
-        'dark:bg-error-500 dark:hover:bg-error-600',
+        'bg-error-500 text-white border border-error-600/30',
+        'hover:bg-error-600 hover:border-error-700/50',
+        'active:bg-error-700',
+        'shadow-sm hover:shadow',
       ],
     },
     size: {
-      sm: 'h-8 px-3 text-sm',
-      md: 'h-10 px-4 text-base',
-      lg: 'h-12 px-6 text-lg',
-      xl: 'h-14 px-8 text-xl',
+      sm: 'h-7 px-3 text-xs',
+      md: 'h-8 px-4 text-sm',
+      lg: 'h-10 px-5 text-base',
+      xl: 'h-12 px-6 text-base',
     },
     fullWidth: {
       true: 'w-full',
@@ -82,12 +97,22 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : 'button';
+    if (asChild && React.isValidElement(children)) {
+      return (
+        <Slot
+          className={cn(buttonVariants({ variant, size, fullWidth, className }))}
+          ref={ref as any}
+          {...props}
+        >
+          {children}
+        </Slot>
+      );
+    }
 
     return (
-      <Comp
+      <button
         className={cn(buttonVariants({ variant, size, fullWidth, className }))}
-        ref={ref}
+        ref={ref as any}
         disabled={disabled || isLoading}
         {...props}
       >
@@ -119,7 +144,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ) : (
           children
         )}
-      </Comp>
+      </button>
     );
   }
 );

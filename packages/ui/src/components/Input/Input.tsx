@@ -4,24 +4,25 @@ import { cn } from '../../utils/cn';
 
 const inputVariants = tv({
   base: [
-    'flex w-full rounded-lg border bg-white px-3 py-2',
-    'text-base text-neutral-900',
-    'placeholder:text-neutral-400',
-    'transition-colors',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2',
-    'disabled:cursor-not-allowed disabled:opacity-50',
-    'dark:bg-neutral-900 dark:text-neutral-50 dark:placeholder:text-neutral-500',
+    'flex w-full rounded-md border bg-white px-3 py-1.5',
+    'text-sm text-neutral-900',
+    'placeholder:text-neutral-500',
+    'transition-all duration-200',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-0',
+    'focus-visible:border-primary-500',
+    'disabled:cursor-not-allowed disabled:opacity-60 disabled:bg-neutral-50',
+    'shadow-sm',
   ],
   variants: {
     variant: {
-      default: 'border-neutral-300 dark:border-neutral-700',
-      error: 'border-error-500 focus-visible:ring-error-500',
-      success: 'border-success-500 focus-visible:ring-success-500',
+      default: 'border-neutral-300 hover:border-neutral-400',
+      error: 'border-error-500 focus-visible:ring-error-400 focus-visible:border-error-600',
+      success: 'border-success-500 focus-visible:ring-success-400 focus-visible:border-success-600',
     },
     size: {
-      sm: 'h-8 text-sm px-2',
-      md: 'h-10 text-base px-3',
-      lg: 'h-12 text-lg px-4',
+      sm: 'h-7 text-xs px-2',
+      md: 'h-8 text-sm px-3',
+      lg: 'h-10 text-base px-4',
     },
   },
   defaultVariants: {
